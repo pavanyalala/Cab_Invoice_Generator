@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace CabInvoiceGeneratorTest
 {
     public class Tests
-    {   
+    {
         [Test]
         public void GivenDistanceAndTime_WhenAnalyze_ShouldReturnFare()
         {
@@ -24,6 +24,16 @@ namespace CabInvoiceGeneratorTest
             InvoiceSummary summary = new InvoiceSummary(2, 290);
             InvoiceSummary expected = invoice.CalculateFare(rides);
             Assert.AreEqual(summary.totalFare, expected.totalFare);
+        }
+        [Test]
+        public void GivenMultipleRides_WhenAnalyze_ShouldReturnAverageFaresOfMultipleRides()
+        {
+            InvoiceGenerator invoice = new InvoiceGenerator(RideType.NORMAL);
+            Ride[] rides = { new Ride(20, 20), new Ride(10, 10) };
+
+            InvoiceSummary summary = new InvoiceSummary(2, 330);
+            InvoiceSummary expected = invoice.CalculateFare(rides);
+            Assert.AreEqual(summary.averageFare, expected.averageFare);
         }
     }
 }
