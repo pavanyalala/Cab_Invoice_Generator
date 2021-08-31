@@ -76,5 +76,32 @@ namespace CabInvoiceGenerator
             }
             return new InvoiceSummary(rides.Length, totalFare);
         }
+        public void AddRides(int userId, Ride[] rides)
+        {
+            RideRepository rideRepository = new RideRepository();
+            try
+            {
+                rideRepository.AddRides(userId, rides);
+            }
+            catch (CabInvoiceException)
+            {
+                if (rides == null)
+                {
+                    throw new CabInvoiceException(CabInvoiceException.ExceptionType.NULL_RIDES, "Rides are Null");
+                }
+            }
+        }
+        public InvoiceSummary GetInvoiceSummary(int userId)
+        {
+            RideRepository rideRepository = new RideRepository();
+            try
+            {
+                return this.CalculateFare(rideRepository.GetRides(userId));
+            }
+            catch (CabInvoiceException)
+            {
+                throw new CabInvoiceException(CabInvoiceException.ExceptionType.INVALID_USER, "Invalid UserId");
+            }
+        }
     }
 }
